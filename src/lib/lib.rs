@@ -272,9 +272,9 @@ pub struct VidMode {
 
 /// Describes the gamma ramp of a monitor.
 pub struct GammaRamp {
-    red:    ~[c_ushort],
-    green:  ~[c_ushort],
-    blue:   ~[c_ushort],
+    pub red:    ~[c_ushort],
+    pub green:  ~[c_ushort],
+    pub blue:   ~[c_ushort],
 }
 
 pub type GLProc = ffi::GLFWglproc;
@@ -731,7 +731,7 @@ pub enum WindowEvent {
 }
 
 pub struct WindowEvents<'a> {
-    priv event_port: &'a Receiver<(f64, WindowEvent)>,
+    event_port: &'a Receiver<(f64, WindowEvent)>,
 }
 
 impl<'a> Iterator<(f64, WindowEvent)> for WindowEvents<'a> {
@@ -741,7 +741,7 @@ impl<'a> Iterator<(f64, WindowEvent)> for WindowEvents<'a> {
 }
 
 pub struct FlushedWindowEvents<'a> {
-    priv event_port: &'a Receiver<(f64, WindowEvent)>,
+    event_port: &'a Receiver<(f64, WindowEvent)>,
 }
 
 impl<'a> Iterator<(f64, WindowEvent)> for FlushedWindowEvents<'a> {
