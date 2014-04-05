@@ -371,7 +371,7 @@ impl Monitor {
         unsafe {
             let mut count = 0;
             let ptr = ffi::glfwGetMonitors(&mut count);
-            slice::from_buf(ptr, count as uint).map(|&m| Monitor { ptr: m })
+            slice::from_buf(ptr, count as uint).iter().map(|&m| Monitor { ptr: m }).collect()
         }
     }
 
@@ -412,7 +412,7 @@ impl Monitor {
         unsafe {
             let mut count = 0;
             let ptr = ffi::glfwGetVideoModes(self.ptr, &mut count);
-            slice::from_buf(ptr, count as uint).map(VidMode::from_glfw_vid_mode)
+            slice::from_buf(ptr, count as uint).iter().map(VidMode::from_glfw_vid_mode).collect()
         }
     }
 
@@ -1252,7 +1252,7 @@ impl Joystick {
         unsafe {
             let mut count = 0;
             let ptr = ffi::glfwGetJoystickAxes(*self as c_int, &mut count);
-            slice::from_buf(ptr, count as uint).map(|&a| a as f32)
+            slice::from_buf(ptr, count as uint).iter().map(|&a| a as f32).collect()
         }
     }
 
@@ -1261,7 +1261,7 @@ impl Joystick {
         unsafe {
             let mut count = 0;
             let ptr = ffi::glfwGetJoystickButtons(*self as c_int, &mut count);
-            slice::from_buf(ptr, count as uint).map(|&b| b as c_int)
+            slice::from_buf(ptr, count as uint).iter().map(|&b| b as c_int).collect()
         }
     }
 
