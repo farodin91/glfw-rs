@@ -24,8 +24,8 @@ use super::*;
 
 // Global callbacks
 
-static error_callback_tls_key: local_data::Key<~ErrorCallback> = &local_data::Key;
-static monitor_callback_tls_key: local_data::Key<~MonitorCallback> = &local_data::Key;
+static error_callback_tls_key: local_data::Key<~ErrorCallback:'static> = &local_data::Key;
+static monitor_callback_tls_key: local_data::Key<~MonitorCallback:'static> = &local_data::Key;
 
 pub extern "C" fn error_callback(error: c_int, description: *c_char) {
     local_data::get(error_callback_tls_key, (|data| {
@@ -36,7 +36,7 @@ pub extern "C" fn error_callback(error: c_int, description: *c_char) {
 }
 
 pub fn set_error_callback<Cb: ErrorCallback + Send>(callback: ~Cb, f: |ffi::GLFWerrorfun| ) {
-    local_data::set(error_callback_tls_key, callback as ~ErrorCallback);
+    local_data::set(error_callback_tls_key, callback as ~ErrorCallback:'static);
     f(error_callback);
 }
 
@@ -50,7 +50,7 @@ pub extern "C" fn monitor_callback(monitor: *ffi::GLFWmonitor, event: c_int) {
 }
 
 pub fn set_monitor_callback<Cb: MonitorCallback + Send>(callback: ~Cb, f: |ffi::GLFWmonitorfun| ) {
-    local_data::set(monitor_callback_tls_key, callback as ~MonitorCallback);
+    local_data::set(monitor_callback_tls_key, callback as ~MonitorCallback:'static);
     f(monitor_callback);
 }
 
